@@ -2134,6 +2134,12 @@ int match_config(string const word, string const value, int const line){
       sim::identify_surface_atoms=true;
       return EXIT_SUCCESS;
    }
+   //-------------------------------------------------------------------
+   test = "error-check";
+   if (word == test){
+       err::check = true;
+       return EXIT_SUCCESS;
+   }
    //-----------------------------------------
    else{
 	  terminaltextcolor(RED);
