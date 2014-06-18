@@ -119,6 +119,16 @@ int set_atom_vars(std::vector<cs::catom_t> & catom_array, std::vector<std::vecto
 		atoms::x_spin_array[atom]=sx*modS;
 		atoms::y_spin_array[atom]=sy*modS;
 		atoms::z_spin_array[atom]=sz*modS;
+        // init AFM magnetization
+        long i = lround(catom_array[atom].x / cs::unit_cell_size[0]);
+        long j = lround(catom_array[atom].y / cs::unit_cell_size[1]);
+        long k = lround(catom_array[atom].z / cs::unit_cell_size[2]);
+        if (0 == mp::material[mat].name.compare("AFMsc")) { // case sensitive
+            double sign = pow(-1.0, i+j+k);
+            atoms::x_spin_array[atom] *= sign;
+            atoms::y_spin_array[atom] *= sign;
+            atoms::z_spin_array[atom] *= sign;
+        }
 	}
 
 	//===========================================================
