@@ -126,6 +126,8 @@ using std::string;
 		double gamma_rel;
 		double Jij_matrix_SI[max_materials];
 
+        double mix_radius;
+
 		double initial_spin[3];
 		bool random_spins;
 		

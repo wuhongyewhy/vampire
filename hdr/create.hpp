@@ -98,6 +98,9 @@ namespace cs{
 	extern double interfacial_roughness_mean_seed_height; // Angstroms
 	extern double interfacial_roughness_seed_height_max; // Angstroms
 	
+    // flag for core-shell intermixing
+    extern bool core_shell_interface_intermixing;
+
 	class unit_cell_atom_t {
 	public:
 		double x; /// atom x-coordinate

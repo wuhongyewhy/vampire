@@ -1125,6 +1125,17 @@ int match_create(string const word, string const value, string const unit, int c
       return EXIT_SUCCESS;
    }
    //--------------------------------------------------------------------
+   test = "core-shell-interface-intermixing";
+   if (word == test){
+       cs::core_shell_interface_intermixing = true; // default
+       // also check for value
+       std::string VFalse = "false";
+       if (value == VFalse){
+           cs::core_shell_interface_intermixing = false;
+       }
+       return EXIT_SUCCESS;
+   }
+   //--------------------------------------------------------------------
    // keyword not found
    //--------------------------------------------------------------------
    else{
@@ -2957,6 +2968,16 @@ int match_material(string const word, string const value, string const unit, int
          check_for_valid_value(gr, word, line, prefix, unit, "none", 0.01, 100.0,"material"," 0.01 - 100.0");
          read_material[super_index].gamma_rel=gr;
          return EXIT_SUCCESS;
+      }
+      //------------------------------------------------------------
+      else
+      test = "mix-radius"; // ratio of radius other materials mixed into
+      if (word == test){
+          double mr = atof(value.c_str());
+          // Test for valid range
+          check_for_valid_value(mr, word, line, prefix, unit, "none", 0.0, 1.0, "material", " 0.0 - 1.0");
+          read_material[super_index].mix_radius = mr;
+          return EXIT_SUCCESS;
       }
       //------------------------------------------------------------
       else

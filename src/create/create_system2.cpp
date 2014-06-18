@@ -109,6 +109,8 @@ namespace cs{
 	double interfacial_roughness_mean_seed_height=3.0; /// Angstroms
 	double interfacial_roughness_seed_height_max=1.8; /// Angstroms
 	
+    // flag for core-shell intermixing
+    bool core_shell_interface_intermixing = false;
 	// unit cell container
 	cs::unit_cell_t unit_cell;
 	

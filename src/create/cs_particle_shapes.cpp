@@ -44,11 +44,14 @@
 #include "create.hpp"
 #include "material.hpp"
 #include "vmath.hpp"
+#include "random.hpp"
 #include <cmath>
 #include <cstdlib>
 #include <list>
 #include <string>
 #include <iostream>
+#include <algorithm>
+#include <time.h> // for rand seed
 
 struct core_radius_t{
    int mat;
@@ -242,7 +245,7 @@ int sphere(double particle_origin[],std::vector<cs::catom_t> & catom_array, cons
 	const int num_atoms = catom_array.size();
 
    // determine order for core-shell particles
-   std::list<core_radius_t> material_order(0);
+   std::vector<core_radius_t> material_order(0);
    for(int mat=0;mat<mp::num_materials;mat++){
       core_radius_t tmp;
       tmp.mat=mat;
@@ -250,7 +253,12 @@ int sphere(double particle_origin[],std::vector<cs::catom_t> & catom_array, cons
       material_order.push_back(tmp);
    }
    // sort by increasing radius
-   material_order.sort(compare_radius);
+   sort(material_order.begin(), material_order.end(), compare_radius);
+   
+   MTRand random_core_shell; // custom core-shell intermixing rand.
+   time_t ltime;
+   time(&ltime);
+   random_core_shell.seed(ltime);
 
  	for(int atom=0;atom<num_atoms;atom++){
 		double range_squared = (catom_array[atom].x-particle_origin[0])*(catom_array[atom].x-particle_origin[0]) + 
@@ -258,7 +266,7 @@ int sphere(double particle_origin[],std::vector<cs::catom_t> & catom_array, cons
 							 (catom_array[atom].z-particle_origin[2])*(catom_array[atom].z-particle_origin[2]);
 		if(mp::material[catom_array[atom].material].core_shell_size>0.0){
          // Iterate over materials
-         for(std::list<core_radius_t>::iterator it = material_order.begin(); it !=  material_order.end(); it++){
+         for(std::vector<core_radius_t>::iterator it = material_order.begin(); it !=  material_order.end(); it++){
             int mat = (it)->mat;
 				double my_radius = mp::material[mat].core_shell_size;
 				double max_range = my_radius*my_radius*particle_radius_squared;
@@ -271,7 +279,36 @@ int sphere(double particle_origin[],std::vector<cs::catom_t> & catom_array, cons
 						catom_array[atom].include=true;
 						catom_array[atom].material=mat;
 						catom_array[atom].grain=grain;
-					}
+                        // core-shell surface intermixing
+                        if (cs::core_shell_interface_intermixing) {
+                            // current mat. external surface
+                            double my_mix_radius = mp::material[mat].mix_radius;
+                            // my_radius 
+                            double range_ratio = sqrt(range_squared/particle_radius_squared);
+                            double diff_to_srurf = my_radius - my_mix_radius;
+                            if (it != material_order.begin() && diff_to_srurf <= my_mix_radius) {
+                                int prev_mat = (it - 1)->mat;
+                                double diff = abs(sqrt(range_squared) - max_range);
+                                // linear probability from 0.5 to 0
+                                double probility = 0.5 - 0.5*(diff_to_srurf/my_mix_radius);
+                                if (mtrandom::grnd() < probility) {
+                                    catom_array[atom].material = prev_mat;
+                                }
+                            }
+                            // current mat. internal surface
+                            if (it+1 != material_order.end()) {
+                                int next_mat = (it+1)->mat;
+                                double inner_radius = mp::material[next_mat].core_shell_size;
+                                double diff_to_srurf = range_ratio - inner_radius;
+                                if (diff_to_srurf <= my_mix_radius) {
+                                    double probility = 0.5 - 0.5*(diff_to_srurf/my_mix_radius);
+                                    if (mtrandom::grnd() < probility) {
+                                        catom_array[atom].material = next_mat;
+                                    }
+                                }
+                            }
+                        } 
+                    }
 					// if set to clear atoms then remove atoms within radius
 					else if(cs::fill_core_shell==false){
 						catom_array[atom].include=false;

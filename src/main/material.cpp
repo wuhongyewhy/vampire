@@ -48,6 +48,7 @@ materials_t::materials_t ():
 	Ks_SI(0.0),
 	Ks(0.0),
 	gamma_rel(1.0),
+    mix_radius(0.0),
 	random_spins(false),
 	min(0.0),
 	max(1.0),

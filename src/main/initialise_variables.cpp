@@ -187,6 +187,7 @@ int default_system(){
 	material[0].Ku1_SI=-4.644e-24;
 	material[0].gamma_rel=1.0;
 	material[0].element="Ag ";
+    material[0].mix_radius = 0.0;
 
 	// Disable Error Checking
 	err::check=false;
