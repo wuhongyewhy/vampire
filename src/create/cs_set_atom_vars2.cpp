@@ -47,6 +47,20 @@
 //using namespace material_parameters;
 	
 namespace cs{
+
+// reverse "AFMsc" magnetization
+void AFM_reverse()
+{
+    for (unsigned int atom = 0; atom<atoms::x_spin_array.size(); atom++){
+        int mat = atoms::type_array[atom];
+        if (0 == mp::material[mat].name.compare("AFMsc")) { // case sensitive
+            atoms::x_spin_array[atom] = -atoms::x_spin_array[atom];
+            atoms::y_spin_array[atom] = -atoms::y_spin_array[atom];
+            atoms::z_spin_array[atom] = -atoms::z_spin_array[atom];
+        }
+    }
+}
+
 int set_atom_vars(std::vector<cs::catom_t> & catom_array, std::vector<std::vector <neighbour_t> > & cneighbourlist){
 
 	// check calling of routine if error checking is activated

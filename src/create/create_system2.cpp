@@ -111,6 +111,7 @@ namespace cs{
 	
     // flag for core-shell intermixing
     bool core_shell_interface_intermixing = false;
+    bool AFM_low_energy_state = false;
 	// unit cell container
 	cs::unit_cell_t unit_cell;
 	

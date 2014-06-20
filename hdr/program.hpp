@@ -31,6 +31,7 @@
 namespace program
 {
 	// program functions
+    extern void AFM_low_E_state();
 	extern int bmark();
 	extern void time_series();
 	extern int hysteresis();

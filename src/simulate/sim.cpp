@@ -209,6 +209,11 @@ int run(){
 	// Check for calling of function
 	if(err::check==true) std::cout << "sim::run has been called" << std::endl;
 
+    // Chose AFM low energy state
+    if (cs::AFM_low_energy_state) {
+        program::AFM_low_E_state();
+    }
+
 	// For MPI version, calculate initialisation time
 	if(vmpi::my_rank==0){
 		#ifdef MPICF

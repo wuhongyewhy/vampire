@@ -100,6 +100,7 @@ namespace cs{
 	
     // flag for core-shell intermixing
     extern bool core_shell_interface_intermixing;
+    extern bool AFM_low_energy_state;
 
 	class unit_cell_atom_t {
 	public:
@@ -312,6 +313,8 @@ int create_neighbourlist(std::vector<cs::catom_t> &, std::vector<std::vector <ne
 ///=====================================================================================
 ///
 int set_atom_vars(std::vector<cs::catom_t> &, std::vector<std::vector <neighbour_t> > &);
+
+void AFM_reverse();
 
 int voronoi_film(std::vector<cs::catom_t> &);
 

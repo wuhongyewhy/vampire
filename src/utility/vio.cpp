@@ -1136,6 +1136,17 @@ int match_create(string const word, string const value, string const unit, int c
        return EXIT_SUCCESS;
    }
    //--------------------------------------------------------------------
+   test = "AFM-low-energy-state";
+   if (word == test){
+       cs::AFM_low_energy_state = true; // default
+       // also check for value
+       std::string VFalse = "false";
+       if (value == VFalse){
+           cs::AFM_low_energy_state = false;
+       }
+       return EXIT_SUCCESS;
+   }
+   //--------------------------------------------------------------------
    // keyword not found
    //--------------------------------------------------------------------
    else{
