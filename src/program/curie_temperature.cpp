@@ -101,7 +101,16 @@ int curie_temperature(){
 
 		// Equilibrate system
 		sim::integrate(sim::equilibration_time);
-		
+
+        // Calculate mag_m, mag
+        stats::mag_m();
+
+        // atoms output
+        if ((vout::output_atoms_config==true)){
+            if (vout::output_atoms_file_counter==0) vout::atoms_coords();
+            vout::atoms();
+        }
+
 		// Reset mean magnetisation counters
 		stats::mag_m_reset();
 		
@@ -121,7 +130,13 @@ int curie_temperature(){
 		
 		// Output data
 		vout::data();
-		
+
+        // atoms output
+        if ((vout::output_atoms_config==true)){
+            if (vout::output_atoms_file_counter==0) vout::atoms_coords();
+            vout::atoms();
+        }
+
 		// Increment temperature
 		sim::temperature+=sim::delta_temperature;
 		

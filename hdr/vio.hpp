@@ -84,6 +84,7 @@ namespace vout{
 	
 	extern bool output_atoms_config;
 	extern int output_atoms_config_rate;
+    extern int output_atoms_file_counter;
 	
 	extern double atoms_output_min[3];
 	extern double atoms_output_max[3];
@@ -108,6 +109,11 @@ namespace vout{
 
 	void redirect(std::ostream& strm, std::string filename);
 	void nullify(std::ostream& strm);  
+
+    // function headers
+    extern void atoms();
+    extern void atoms_coords();
+
 
 }
 

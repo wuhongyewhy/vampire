@@ -92,7 +92,16 @@ void partial_hysteresis_loop(){
    // Equilibrate system in saturation field
    sim::H_applied=sim::Heq;
    sim::integrate(sim::equilibration_time);
-      
+   
+   // Calculate mag_m, mag
+   stats::mag_m();
+
+   // atoms output
+   if ((vout::output_atoms_config==true)){
+       if (vout::output_atoms_file_counter==0) vout::atoms_coords();
+       vout::atoms();
+   }
+
    // Setup min and max fields and increment (uT)
    int iHmax=vmath::iround(double(sim::Hmax)*1.0E6);
    int iHmin=vmath::iround(double(sim::Hmin)*1.0E6);
@@ -133,7 +142,13 @@ void partial_hysteresis_loop(){
 
       // Output to screen and file after each field
       vout::data();
-      
+
+      // atoms output
+      if ((vout::output_atoms_config==true)){
+          if (vout::output_atoms_file_counter==0) vout::atoms_coords();
+          vout::atoms();
+      }
+
    } // End of field loop
 
    return;
