@@ -348,6 +348,14 @@ int run(){
          program::partial_hysteresis_loop();
          break;
 
+      case 20:
+          if (vmpi::my_rank==0){
+              std::cout << "H-loop-hysteresis..." << std::endl;
+              zlog << "H-loop-hysteresis..." << std::endl;
+          }
+          program::H_loop_hysteresis();
+          break;
+
 		case 50:
 			if(vmpi::my_rank==0){
 				std::cout << "Diagnostic-Boltzmann..." << std::endl;
